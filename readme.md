@@ -2,9 +2,13 @@ git remote add origin https://github.com/PratikshaHatkar/Farmer-Consumer.git
 git branch -M main
 git push -u origin main
 
-
-
-
+start commads:::
+git init
+git add .
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/PratikshaHatkar/new-farmer-consumer.git
+git push -u origin main
 Every day when working on the project:
 
 git pull origin main → sync remote first
