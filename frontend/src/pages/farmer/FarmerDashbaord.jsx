@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import {useContext} from "react";
 import AuthContext from "../../auth/authContext";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom"
 
 
 import {Link} from "react-router-dom"
@@ -11,6 +12,7 @@ import { FaUser } from "react-icons/fa";
 
 
 const FarmerDashboard = () => {
+  const navigate = useNavigate();
   const {user} = useContext(AuthContext)
   // console.log({user})
   const [products , setProducts] = useState([])
@@ -51,8 +53,8 @@ const FarmerDashboard = () => {
     }
   }
 
-  const updateProduct = async(id) => {
-    if(window.confirm("Are you sure you want to update product?")) return;
+  const handleEdit = async(productId) => {
+    navigate(`/edit-product/${productId}`)
   }
 
   const logout = () => {
@@ -74,11 +76,12 @@ const FarmerDashboard = () => {
     </div>
     <hr />
 
-    <div className="product text-lg pl-5 h-14">
+    <div  onClick={() => navigate("/farmer")} className="product text-lg pl-5 h-14">
+      
       My Products
     </div>
     
-    <div className="addproduct text-lg pl-5 h-14">
+    <div onClick={() => navigate("/farmer/addProduct")} className="addproduct text-lg pl-5 h-14">
       Add Products
     </div>
     
@@ -108,12 +111,14 @@ const FarmerDashboard = () => {
         <div className="first flex justify-between p-3">
         <div className="l">
         <h2>My Produce</h2>
+ 
+
 
       </div>
       <div className="r">
       {/* <Button variant="danger">Add Produce</Button> */}
       <Button variant="danger">
-        <Link className="text-white no-underline" to="/farmer/addProduct">Add Produce</Link>
+        <Link className="text-white no-underline" to="/farmer/addProduct" >Add Produce</Link>
       </Button>
 
       </div>
@@ -160,7 +165,7 @@ const FarmerDashboard = () => {
           {/* <span> {p.quantity}kg</span> */}
 
           <div className="opt flex justify-between pt-2">
-            <Button  variant="primary" size="sm" active>
+            <Button onClick={()=>{handleEdit(p._id)}}  variant="primary" size="sm" active>
               Edit
               </Button>
             <Button onClick={() => deleteProduct(p._id)} variant="primary" size="sm" active>

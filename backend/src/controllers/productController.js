@@ -1,4 +1,5 @@
-
+const fs = require("fs")
+const path = require("path")
 const Product = require("../models/productModel")
 
 const addProduct = async (req ,res) => {
@@ -69,7 +70,10 @@ const deleteProduct = async (req , res) =>{
 
 const getSingleProduct = async (req, res) => {
     try {
-      const product = await Product.findById(req.params.id);
+      const product = await Product.findOne({
+        _id: req.params.id,
+        farmerId: req.user.id,
+      });
   
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
@@ -80,60 +84,65 @@ const getSingleProduct = async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   };
-  
-//   const updateProduct = async (req, res) => {
-//     try {
-
-//         const product = await Product.findOne({
-//             _id: req.params.id,
-//             farmerId: req.user.id,
-//           });
-          
-
-//       const updateData = {
-//         name: req.body.name,
-//         price: req.body.price,
-//         quantity: req.body.quantity,
-//       };
-  
-//       if (req.file) {
-//         updateData.image = req.file.filename;
-//       }
-  
-//       const updatedProduct = await Product.findByIdAndUpdate(
-//         req.params.id,
-//         updateData,
-//         { new: true, runValidators: true }
-//       );
-  
-//       if (!updatedProduct) {
-//         return res.status(404).json({ message: "Product not found" });
-//       }
-  
-//       res.status(200).json({ message: "Product updated", updatedProduct });
-//     } catch (err) {
-//       res.status(500).json({ message: err.message });
-//     }
-//   };
-  
 
 
-const updateProduct = async (req , res) =>{
-    try{
-        const updatedProduct = await Product.findByIdAndUpdate(
-            req.params.id,
-            {$set :req.body},
-            {new:true ,runValidators:true}
-        )
-        if(!updatedProduct){
-            return res.status(404).json({message:"product not found"})
+  
+const updateProduct = async (req, res) => {
+    try {
+
+      const product = await Product.findOne({
+        _id: req.params.id,
+        farmerId: req.user.id,
+      });
+  
+      if (!product) {
+        return res.status(404).json({
+          message: "Product not found or not authorized",
+        });
+      }
+  
+
+      const updateData = {};
+  
+      if (req.body.name) updateData.name = req.body.name;
+      if (req.body.price) updateData.price = req.body.price;
+      if (req.body.quantity) updateData.quantity = req.body.quantity;
+  
+     
+      if (req.file) {
+        if (product.image) {
+          const oldImagePath = path.join(
+            __dirname,
+            "..",
+            "uploads",
+            product.image
+          );
+  
+          if (fs.existsSync(oldImagePath)) {
+            fs.unlinkSync(oldImagePath);
+          }
         }
-        res.status(200).json({message:"Updated Product" , updatedProduct})
+  
+        updateData.image = req.file.filename;
+      }
+  
+      const updatedProduct = await Product.findByIdAndUpdate(
+        req.params.id,
+        updateData,
+        { new: true, runValidators: true }
+      );
+  
+      res.status(200).json({
+        message: "Product updated successfully",
+        updatedProduct,
+      });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
     }
-    catch(err){
-        res.status(500).json({message:err.message})
-    }
-}
+  };
+  
+
+
 
 
 module.exports = {

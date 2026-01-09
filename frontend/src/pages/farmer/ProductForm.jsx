@@ -13,19 +13,49 @@ const ProductForm = () => {
     })
 
     const [isEdit , setIsEdit]  = useState(false)
+    const [existingImage, setExistingImage] = useState("");
 
-    // useEffect(() => {
-    //     if(id){
-    //         setIsEdit(true)
-    //         api.get(`/farmer/${id}`)
-    //         .then(res => {
-    //             const {name , price , quantity} = res.data.product
-    //             setForm({...form , name , price , quantity})
-    //         }).catch(err => {
-    //             console.error(err)
-    //         })
-    //     }
-    // }, [id])
+    useEffect(() => {
+        if(id){
+            setIsEdit(true)
+            fetchSingleProduct()
+        }
+    }, [id])
+
+    const fetchSingleProduct = async() =>{
+        try{
+            const res = await api.get(`/farmer/product/${id}`)
+
+            setForm({
+                name :res.data.product.name,
+                price :res.data.product.price,
+                quantity :res.data.product.quantity,
+                // image :res.data.product.image,
+            })
+            setExistingImage(res.data.product.image);
+        }
+        catch(err){
+            console.error(err)
+        }
+    }
+
+    const handleChange = async(e) => {
+
+        const {name , value , files} = e.target
+        if(name === "image"){
+            setForm({
+                ...form, image:files[0]
+            })
+
+        }else{
+            setForm({
+                ...form, [name]:value
+    
+            })
+
+        }
+
+    }
     
     
     const navigate = useNavigate()
@@ -42,9 +72,10 @@ const ProductForm = () => {
         if(!form.quantity || isNaN(form.quantity) || Number(form.quantity) < 1){
             newErrors.quantity = "Quantity must be atleast one"
         }
-        if(!form.image){
+        if(!isEdit && !form.image){
             newErrors.image = "Product image is required"
-        }else{
+        }
+        if(form.image){
             const allowedTypes = ["image/jpg" , "image/jpeg" , "image/png"]
             if(!allowedTypes.includes(form.image.type)){
                 newErrors.image = "Only JPG, JPEG, PNG images allowed";
@@ -60,17 +91,7 @@ const ProductForm = () => {
         return Object.keys(newErrors).length === 0;
     }
 
-    const handleChange = async(e) => {
 
-        const {name , value , files} = e.target
-
-        setForm({
-            ...form,
-            [name]:files ? files[0]:value
-
-        })
-
-    }
 
 
     const handleSubmit = async (e) => {
@@ -85,28 +106,23 @@ const ProductForm = () => {
         formData.append("image" ,form.image)
 
         try{
-            // if(isEdit){
-            //     await api.put(`/farmer/${id}` , formData , {
-            //         headers: {
-            //             "Content-Type": "multipart/form-data",
-            //         },
-            //     }).then(() => {
-            //         alert("product updated.")
-            //         navigate(-1)
-            //     })
+            if(isEdit){
+                await api.put(`/farmer/product/${id}` , formData , {
+                }).then(() => {
+                    alert("product updated.")
+                    navigate(-1)
+                })
 
-            // }
-            // else{
+            }
+            else{
                 await api.post("/farmer/addProduct" , formData , {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
+    
                 }).then(() => {
                     alert("product added.")
                     navigate(-1)
                 })
 
-            //}
+            }
         }
         catch(err){
             console.error(err);
@@ -175,30 +191,6 @@ const ProductForm = () => {
     );
   };
 
-{/* 
-  if(isEdit){
-                await api.put(`/farmer/${id}` , formData , {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }).then(() => {
-                    alert("product updated.")
-                    navigate(-1)
-                })
-
-            }
-            else{
-                await api.post("/farmer/addProduct" , formData , {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                }).then(() => {
-                    alert("product added.")
-                    navigate(-1)
-                })
-
-            }
-        } */}
 
   
   export default ProductForm;

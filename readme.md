@@ -2,6 +2,23 @@ git remote add origin https://github.com/PratikshaHatkar/Farmer-Consumer.git
 git branch -M main
 git push -u origin main
 
+
+
+
+Every day when working on the project:
+
+git pull origin main → sync remote first
+
+Make changes in VS Code
+
+git add .
+
+git commit -m "..."
+
+git pull --rebase origin main → optional but safe
+
+git push origin main
+
 JWT authentication is done
 farmer dashboard basic frontend done
 logged in user name should display  -- done
@@ -35,3 +52,7 @@ displays count , validation done , add product done , delete product is done
 6 jan :
 edit functionlity , search functionality
 consumer dashboard: all products , browse product , orders
+
+7 , 9 jan:
+edit functionality error solve
+product can be updated the data is fetch in the form use singleproductdata controller and updateData controller and write frontend also
