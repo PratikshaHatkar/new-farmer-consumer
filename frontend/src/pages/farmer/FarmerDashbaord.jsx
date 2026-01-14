@@ -26,7 +26,6 @@ const FarmerDashboard = () => {
 
     api.get("/farmer/").then((res) => {
       setProducts(res.data.product)
-
     })
     .catch((err)=>{console.error(err)})
 

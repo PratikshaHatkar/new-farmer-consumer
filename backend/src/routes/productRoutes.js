@@ -5,12 +5,14 @@ const Product = require("../models/productModel")
 const router = express.Router()
 const upload = require("../middlewares/upload")
 
-const {addProduct , getProductCount , getProducts , deleteProduct , updateProduct ,getSingleProduct} = require("../controllers/productController")
+const {addProduct , getProductCount , getProducts , deleteProduct , updateProduct ,getSingleProduct ,
+    getAllProducts} = require("../controllers/productController")
 
 
 router.get("/" , verifyToken , authorizeRoles("admin" , "farmer") , getProducts,  (req,res) =>{
     res.json({message: "list"})
 })
+router.get("/all" , verifyToken , authorizeRoles("admin" , "consumer" , "farmer") , getAllProducts)
 router.post("/addProduct" , verifyToken ,   upload.single("image") , authorizeRoles("admin" , "farmer") , addProduct,  (req,res) =>{
     res.json({message: "product added"})
 })

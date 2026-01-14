@@ -37,6 +37,17 @@ const getProducts = async(req , res) =>{
     }
 }
 
+const getAllProducts = async(req , res) =>{
+    try{
+        const product = await Product.find()
+
+        res.status(200).json({message:"product list" , product})
+    }
+    catch(err){
+        res.status(500).json({message:err.message})
+    }
+}
+
 const getProductCount = async(req , res)=>{
     try{
         let count;
@@ -152,4 +163,5 @@ module.exports = {
     deleteProduct,
     getSingleProduct,
     updateProduct,
+    getAllProducts,
 }

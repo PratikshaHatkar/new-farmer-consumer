@@ -228,3 +228,22 @@ If you want, I can:
 * Connect dashboard cards to DB
 
 Just tell me **“Next: Add Product”** 🌱
+
+
+Consumer login/register
+
+✅ Consumer product listing page
+
+✅ Cart
+
+✅ Order placement
+
+✅ Farmer order management
+
+✅ Negotiation
+
+✅ Payments
+
+✅ Reviews
+
+✅ Admin panel
