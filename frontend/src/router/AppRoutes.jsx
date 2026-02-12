@@ -12,6 +12,7 @@ import Home from "../pages/HomePage"
 import Profile from "../pages/Profile"
 
 import ProductForm from "../pages/farmer/ProductForm"
+import ProductDetails from "../pages/consumer/ProductDetails"
 
 
 const AppRoutes = () => {
@@ -70,6 +71,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/consumer/productInfo/:id"
+        element={
+          <ProtectedRoute>
+            < ProductDetails/>
           </ProtectedRoute>
         }
       />

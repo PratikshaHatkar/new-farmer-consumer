@@ -125,7 +125,7 @@ const ConsumerDashboard = () => {
 
      return(
 
-        <div key={p._id} className="p-2 border-2 rounded-md w-[17vw] max-h-[50vh] items-center">
+        <div   key={p._id} onClick={() => navigate(`/consumer/productInfo/${p._id}`)}  className="p-2 border-2 rounded-md w-[17vw] max-h-[50vh] items-center">
           <div className="img">
               <img className="w-full h-[25vh] object-fit" 
               src={`http://localhost:5001/uploads/${p.farmerId}/${p.image}`} alt={p.name} />

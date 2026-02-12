@@ -23,7 +23,7 @@ router.delete("/:id" , verifyToken , authorizeRoles("admin" , "farmer") , delete
 
 router.get("/product/:id" , verifyToken , authorizeRoles("admin" , "farmer") , getSingleProduct)
 
-router.get("/productInfo/:id" , verifyToken , authorizeRoles("admin" ,"farmer", "consumer") , getProductDetails)
+router.get("/productInfo/:id" , verifyToken , authorizeRoles("admin" , "consumer") , getProductDetails)
 
 router.put("/product/:id" , verifyToken , authorizeRoles("admin" , "farmer") ,  upload.single("image"), updateProduct)
 
