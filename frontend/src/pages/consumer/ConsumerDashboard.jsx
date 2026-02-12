@@ -84,8 +84,7 @@ const ConsumerDashboard = () => {
     <div className="right h-[100vh] w-[75vw] p-4 absolute right-4">
 
       <div className="username flex justify-end text-[15px]">
-      <Link  className="profile-icon">  
-      {/* to="/farmer/profile" change route */}
+      <Link to="/consumer/profile" className="profile-icon">  
       <FaUser size={24} />
     </Link>
         Welcome , {user?.username}</div>
@@ -109,9 +108,9 @@ const ConsumerDashboard = () => {
         <div className="2 w-[15vw] border-4 rounded-lg flex flex-col items-center	">
         <span>Active Orders</span>
           <span>0</span></div>
-        <div className="3 w-[15vw] border-4 rounded-lg flex flex-col items-center	">
+        {/* <div className="3 w-[15vw] border-4 rounded-lg flex flex-col items-center	">
         <span>Total Sales</span>
-          <span>0</span></div>
+          <span>0</span></div> */}
         <div className="4 w-[15vw] border-4 rounded-lg flex flex-col items-center	">
         <span>Negotiation</span>
           <span>0</span></div>
@@ -126,7 +125,7 @@ const ConsumerDashboard = () => {
 
      return(
 
-        <div key={p._id} className="p-2 border-2 rounded-md w-[17vw] h-[40vh] items-center">
+        <div key={p._id} className="p-2 border-2 rounded-md w-[17vw] max-h-[50vh] items-center">
           <div className="img">
               <img className="w-full h-[25vh] object-fit" 
               src={`http://localhost:5001/uploads/${p.farmerId}/${p.image}`} alt={p.name} />
@@ -134,13 +133,29 @@ const ConsumerDashboard = () => {
             </div>
 
             <div className="name flex justify-between">
-              <span>{p.name}</span>
-              <span>₹ {p.price} /kg</span>
-             
+              <span>{p.name}</span> 
           </div>
-          {/* <span> {p.quantity}kg</span> */}
 
+            <div className="name flex justify-between pt-1">
+              <span className="text-lg">₹ {p.price}</span>
+             <span> {p.quantity} kg</span>
+             {/* <span> {p.farmerId} kg</span> */}
           </div>
+
+            <div className="name flex justify-between">
+              <span className="text-sm">per kg</span>
+             <span className="text-xs">Available</span>
+          </div>
+
+          <div className="name flex justify-between pt-1">
+          <Button onClick={()=>{}}  variant="primary" size="sm" active>
+              Negotiation
+              </Button>
+            <Button  variant="primary" size="sm" active>
+                Buy Now
+              </Button>
+          </div>
+        </div>
 
         ) 
 

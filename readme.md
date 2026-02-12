@@ -54,3 +54,5 @@ edit functionlity , search functionality
 7 , 9 jan:
 edit functionality error solve
 product can be updated the data is fetch in the form use singleproductdata controller and updateData controller and write frontend also
+
+12 feb:

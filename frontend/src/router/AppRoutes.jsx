@@ -66,6 +66,14 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/consumer/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/farmer/addProduct"
         element={
           <ProtectedRoute>

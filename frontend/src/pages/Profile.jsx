@@ -83,7 +83,8 @@ const Profile = () => {
     <form onSubmit={handleSubmit} className="space-y-2">
 
       {/* Farm Name */}
-      <div>
+     {profile?.role === "farmer" && (
+        <div>
         <label className="block text-sm font-medium text-gray-600 mb-1">
           Farm Name
         </label>
@@ -99,6 +100,7 @@ const Profile = () => {
                      focus:border-green-500 transition"
         />
       </div>
+     )}
 
       {/* Phone */}
       <div>

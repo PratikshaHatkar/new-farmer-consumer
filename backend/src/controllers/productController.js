@@ -152,7 +152,20 @@ const updateProduct = async (req, res) => {
     }
   };
   
-
+  const getProductDetails = async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.id)
+      // .populate("farmerId", "name farmLocation");
+  
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+  
+      res.status(200).json({ product });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
 
 
 
@@ -164,4 +177,5 @@ module.exports = {
     getSingleProduct,
     updateProduct,
     getAllProducts,
+    getProductDetails,
 }

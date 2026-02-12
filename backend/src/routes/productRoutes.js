@@ -6,7 +6,7 @@ const router = express.Router()
 const upload = require("../middlewares/upload")
 
 const {addProduct , getProductCount , getProducts , deleteProduct , updateProduct ,getSingleProduct ,
-    getAllProducts} = require("../controllers/productController")
+    getAllProducts , getProductDetails} = require("../controllers/productController")
 
 
 router.get("/" , verifyToken , authorizeRoles("admin" , "farmer") , getProducts,  (req,res) =>{
@@ -22,9 +22,9 @@ router.get("/count" , verifyToken , authorizeRoles("admin" , "farmer") , getProd
 router.delete("/:id" , verifyToken , authorizeRoles("admin" , "farmer") , deleteProduct)
 
 router.get("/product/:id" , verifyToken , authorizeRoles("admin" , "farmer") , getSingleProduct)
+
+router.get("/productInfo/:id" , verifyToken , authorizeRoles("admin" ,"farmer", "consumer") , getProductDetails)
+
 router.put("/product/:id" , verifyToken , authorizeRoles("admin" , "farmer") ,  upload.single("image"), updateProduct)
-
-
-
 
  module.exports = router;
