@@ -103,11 +103,17 @@ const ProductForm = () => {
         formData.append("name" ,form.name)
         formData.append("price" ,form.price)
         formData.append("quantity" ,form.quantity)
-        formData.append("image" ,form.image)
+        // formData.append("image" ,form.image)
+        if (form.image) {
+            formData.append("image", form.image);
+          }
 
         try{
             if(isEdit){
                 await api.put(`/farmer/product/${id}` , formData , {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
                 }).then(() => {
                     alert("product updated.")
                     navigate(-1)
@@ -116,6 +122,9 @@ const ProductForm = () => {
             }
             else{
                 await api.post("/farmer/addProduct" , formData , {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                      },
     
                 }).then(() => {
                     alert("product added.")

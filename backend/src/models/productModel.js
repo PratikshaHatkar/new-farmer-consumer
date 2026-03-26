@@ -19,6 +19,11 @@ const productSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
+    public_id: {
+        type: String, // for delete
+        required: true,
+      },
+
     farmerId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",

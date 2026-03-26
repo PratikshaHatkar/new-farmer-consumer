@@ -4,6 +4,7 @@ const verifyToken  = require("../middlewares/authMiddleware")
 const Product = require("../models/productModel")
 const router = express.Router()
 const upload = require("../middlewares/upload")
+const multer = require("multer");
 
 const {addProduct , getProductCount , getProducts , deleteProduct , updateProduct ,getSingleProduct ,
     getAllProducts , getProductDetails} = require("../controllers/productController")

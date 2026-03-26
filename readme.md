@@ -56,3 +56,8 @@ edit functionality error solve
 product can be updated the data is fetch in the form use singleproductdata controller and updateData controller and write frontend also
 
 12 feb:
+ProductDetail route and ui
+
+26 March :
+change the uploader local storage code to cloudinary cloud storage code
+changes are done

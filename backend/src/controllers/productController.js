@@ -1,30 +1,58 @@
 const fs = require("fs")
 const path = require("path")
 const Product = require("../models/productModel")
+const cloudinary = require("../config/cloudinary");
 
-const addProduct = async (req ,res) => {
-    try{
-        const {name ,price ,  quantity} = req.body;
-        const product = new Product({
-            name ,
-            price , 
-            quantity,
-            // image , 
-            image: req.file ? req.file.filename : null,
-            farmerId:req.user.id
+
+const addProduct = async (req, res) => {
+  try {
+    const { name, price, quantity } = req.body;
+
+    const product = new Product({
+      name,
+      price,
+      quantity,
+      farmerId: req.user.id,
+
+      // ✅ Cloudinary values
+      image: req.file ? req.file.path : null,        // URL
+      public_id: req.file ? req.file.filename : null // for delete
+    });
+
+    await product.save();
+
+    res.status(201).json({
+      message: "product added successfully",
+      product,
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+// const addProduct = async (req ,res) => {
+//     try{
+//         const {name ,price ,  quantity} = req.body;
+//         const product = new Product({
+//             name ,
+//             price , 
+//             quantity,
+//             // image , 
+//             image: req.file ? req.file.filename : null,
+//             farmerId:req.user.id
 
             
-        })
+//         })
 
-        await product.save()
+//         await product.save()
     
-        res.status(201).json({message:"product added successfully" , product})
+//         res.status(201).json({message:"product added successfully" , product})
 
-    }
-    catch(err){
-        res.status(500).json({message:err.message})
-    }
-}
+//     }
+//     catch(err){
+//         res.status(500).json({message:err.message})
+//     }
+// }
 
 const getProducts = async(req , res) =>{
     try{
@@ -98,59 +126,59 @@ const getSingleProduct = async (req, res) => {
 
 
   
-const updateProduct = async (req, res) => {
-    try {
+// const updateProduct = async (req, res) => {
+//     try {
 
-      const product = await Product.findOne({
-        _id: req.params.id,
-        farmerId: req.user.id,
-      });
+//       const product = await Product.findOne({
+//         _id: req.params.id,
+//         farmerId: req.user.id,
+//       });
   
-      if (!product) {
-        return res.status(404).json({
-          message: "Product not found or not authorized",
-        });
-      }
+//       if (!product) {
+//         return res.status(404).json({
+//           message: "Product not found or not authorized",
+//         });
+//       }
   
 
-      const updateData = {};
+//       const updateData = {};
   
-      if (req.body.name) updateData.name = req.body.name;
-      if (req.body.price) updateData.price = req.body.price;
-      if (req.body.quantity) updateData.quantity = req.body.quantity;
+//       if (req.body.name) updateData.name = req.body.name;
+//       if (req.body.price) updateData.price = req.body.price;
+//       if (req.body.quantity) updateData.quantity = req.body.quantity;
   
      
-      if (req.file) {
-        if (product.image) {
-          const oldImagePath = path.join(
-            __dirname,
-            "..",
-            "uploads",
-            product.image
-          );
+//       if (req.file) {
+//         if (product.image) {
+//           const oldImagePath = path.join(
+//             __dirname,
+//             "..",
+//             "uploads",
+//             product.image
+//           );
   
-          if (fs.existsSync(oldImagePath)) {
-            fs.unlinkSync(oldImagePath);
-          }
-        }
+//           if (fs.existsSync(oldImagePath)) {
+//             fs.unlinkSync(oldImagePath);
+//           }
+//         }
   
-        updateData.image = req.file.filename;
-      }
+//         updateData.image = req.file.filename;
+//       }
   
-      const updatedProduct = await Product.findByIdAndUpdate(
-        req.params.id,
-        updateData,
-        { new: true, runValidators: true }
-      );
+//       const updatedProduct = await Product.findByIdAndUpdate(
+//         req.params.id,
+//         updateData,
+//         { new: true, runValidators: true }
+//       );
   
-      res.status(200).json({
-        message: "Product updated successfully",
-        updatedProduct,
-      });
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  };
+//       res.status(200).json({
+//         message: "Product updated successfully",
+//         updatedProduct,
+//       });
+//     } catch (err) {
+//       res.status(500).json({ message: err.message });
+//     }
+//   };
   
   const getProductDetails = async (req, res) => {
     try {
@@ -166,6 +194,52 @@ const updateProduct = async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   };
+
+const updateProduct = async (req, res) => {
+  try {
+    const product = await Product.findOne({
+      _id: req.params.id,
+      farmerId: req.user.id,
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found or not authorized",
+      });
+    }
+
+    const updateData = {};
+
+    if (req.body.name) updateData.name = req.body.name;
+    if (req.body.price) updateData.price = req.body.price;
+    if (req.body.quantity) updateData.quantity = req.body.quantity;
+
+    // 🔥 IMAGE UPDATE LOGIC
+    if (req.file) {
+      // delete old image from cloudinary
+      if (product.public_id) {
+        await cloudinary.uploader.destroy(product.public_id);
+      }
+
+      // save new image
+      updateData.image = req.file.path;
+      updateData.public_id = req.file.filename;
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      updatedProduct,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 
 
