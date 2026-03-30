@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes")
 const userRoutes = require("./routes/userRoutes")
 const cors = require("cors");
 const productRoutes = require("./routes/productRoutes")
+const orderRoutes = require("./routes/orderRoutes")
 
 const path = require("path")
 
@@ -21,6 +22,7 @@ app.use("/api/auth" , authRoutes)
 app.use("/api/users" , userRoutes)
 app.use("/api/farmer" , productRoutes)
 app.use("/api/consumer" , productRoutes)
+app.use("/api/orders" , orderRoutes)
 // app.use("/api/my-product" , productRoutes)
 // app.use("/api/count" , productRoutes)
 

@@ -12,6 +12,7 @@ import Home from "../pages/HomePage"
 import Profile from "../pages/Profile"
 
 import ProductForm from "../pages/farmer/ProductForm"
+import FarmerOrder from "../pages/farmer/FarmerOrder"
 import ProductDetails from "../pages/consumer/ProductDetails"
 
 
@@ -53,6 +54,16 @@ const AppRoutes = () => {
           <ProtectedRoute>
             <RoleBasedRoute allowedRoles={["admin", "farmer", "consumer"]}>
               <ConsumerDashboard />
+            </RoleBasedRoute>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/orders/order-list"
+        element={
+          <ProtectedRoute>
+            <RoleBasedRoute allowedRoles={["admin", "farmer", "consumer"]}>
+              <FarmerOrder />
             </RoleBasedRoute>
           </ProtectedRoute>
         }

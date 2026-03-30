@@ -83,6 +83,9 @@ const FarmerDashboard = () => {
     <div onClick={() => navigate("/farmer/addProduct")} className="addproduct text-lg pl-5 h-14">
       Add Products
     </div>
+    <div onClick={() => navigate("/orders/order-list")} className="addproduct text-lg pl-5 h-14">
+     farmer Orders
+    </div>
     
 
     <div className="negotiation text-lg pl-5 h-14">

@@ -10,6 +10,10 @@ const ProductDetails = () => {
     const {id} = useParams()
     const [product , setProduct] = useState(null)
 
+    const [quantity, setQuantity] = useState(1);
+    const [loading, setLoading] = useState(false);
+  
+
     useEffect(() => {
         const fetchProductDetails = async () =>{
             try{
@@ -28,6 +32,23 @@ const ProductDetails = () => {
     if(!product) {
       return <p>Loading...</p>
     }
+  //not work
+    const handleOrder = async () => {
+      try{
+        setLoading(true);
+      await api.post("/orders", {
+        productId:product._id,
+        quantity: Number(quantity),
+      });
+      
+      alert("Order placed!");
+      setLoading(false);
+    }
+    catch(err){
+      setLoading(false);
+      alert("Failed to place order");
+    }
+    };
 
   return (
     // <div className='border-2 max-w-[30vw] justify-center'>
@@ -91,9 +112,12 @@ const ProductDetails = () => {
         <button className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg transition">
           Negotiate
         </button>
-        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition">
+        {/* <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition">
           Buy Now
-        </button>
+        </button> */}
+        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition" onClick={handleOrder} disabled={loading}>
+        {loading ? "Placing..." : "Place Order"}
+      </button>
       </div>
     </div>
   </div>
