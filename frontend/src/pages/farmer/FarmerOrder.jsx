@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../api/axios"
 
 const FarmerOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -10,9 +10,9 @@ const FarmerOrders = () => {
   const fetchOrders = async () => {
     try {
       const res = await api.get("/orders/order-list", {
-        // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       setOrders(res.data);
@@ -25,10 +25,11 @@ const FarmerOrders = () => {
     fetchOrders();
   }, []);
 
+
   // 🔄 Update Status
   const updateStatus = async (id, status) => {
     try {
-      await axios.put(
+      await api.put(
         `/api/orders/${id}`,
         { status },
         {
@@ -63,7 +64,7 @@ const FarmerOrders = () => {
           {orders.map((order) => (
             <tr key={order._id}>
               <td>{order.productId?.name}</td>
-              <td>{order.buyerId?.name}</td>
+              <td>{order.buyerId?.username}</td>
               <td>{order.quantity}</td>
               <td>{order.status}</td>
 

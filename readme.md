@@ -62,5 +62,8 @@ ProductDetail route and ui
 change the uploader local storage code to cloudinary cloud storage code
 changes are done
 
-30 march: 
+31 march: 
 backend api work but frontend has problem
+
+1 march:
+order list frontend

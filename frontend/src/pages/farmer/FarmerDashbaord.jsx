@@ -16,14 +16,13 @@ const FarmerDashboard = () => {
   const {user} = useContext(AuthContext)
   // console.log({user})
   const [products , setProducts] = useState([])
+  const [orders , setOrders] = useState([])
   const [productCount , setProductCount] = useState(0);
 
   const [searchTerm, setSearchTerm] = useState("");
 
 
   useEffect(() => {
-     
-
     api.get("/farmer/").then((res) => {
       setProducts(res.data.product)
     })
@@ -33,6 +32,7 @@ const FarmerDashboard = () => {
       setProductCount(res.data.count)
     })
     .catch((err) => {console.error(err)})
+
 
   }, []);
 
@@ -62,6 +62,8 @@ const FarmerDashboard = () => {
   };
 
 
+
+
   return <>
   <div className="cont flex">
 
@@ -83,7 +85,10 @@ const FarmerDashboard = () => {
     <div onClick={() => navigate("/farmer/addProduct")} className="addproduct text-lg pl-5 h-14">
       Add Products
     </div>
-    <div onClick={() => navigate("/orders/order-list")} className="addproduct text-lg pl-5 h-14">
+    {/* <div onClick={fetchOrders} className="addproduct text-lg pl-5 h-14">
+     farmer Orders
+    </div> */}
+    <div onClick={() => navigate("/farmer/orders/order-list")} className="addproduct text-lg pl-5 h-14">
      farmer Orders
     </div>
     

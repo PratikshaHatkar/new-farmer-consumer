@@ -59,10 +59,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/orders/order-list"
+        path="/farmer/orders/order-list"
         element={
           <ProtectedRoute>
-            <RoleBasedRoute allowedRoles={["admin", "farmer", "consumer"]}>
+            <RoleBasedRoute allowedRoles={["admin", "farmer"]}>
               <FarmerOrder />
             </RoleBasedRoute>
           </ProtectedRoute>
