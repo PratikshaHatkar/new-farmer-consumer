@@ -1,17 +1,19 @@
-const express = require("express")
-const authorizeRoles = require("../middlewares/roleMiddleware")
-const verifyToken  = require("../middlewares/authMiddleware")
-const Product = require("../models/productModel")
-const Order = require("../models/orderModel")
-const router = express.Router()
-const upload = require("../middlewares/upload")
-const multer = require("multer");
+import express from "express";
+import authorizeRoles from "../middlewares/roleMiddleware.js";
+import verifyToken from "../middlewares/authMiddleware.js";
+import Product from "../models/productModel.js";
+import Order from "../models/orderModel.js";
+import upload from "../middlewares/upload.js";
 
-const {placeOrder, getFarmerOrders , updateOrderStatus,} = require("../controllers/orderController")
+import {
+  placeOrder,
+  getFarmerOrders,
+  updateOrderStatus,
+} from "../controllers/orderController.js";
 
-
+const router = express.Router();
 router.post("/" , verifyToken , authorizeRoles("admin" , "farmer" , "consumer") , placeOrder)
 router.get("/order-list" , verifyToken , authorizeRoles("admin" , "farmer") , getFarmerOrders)
 router.put("/:id" , verifyToken , authorizeRoles("admin" , "farmer") , updateOrderStatus)
 
-module.exports = router;
+export default router;

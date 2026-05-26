@@ -21,7 +21,7 @@ const ProductDetails = () => {
                 setProduct(res.data.product)
             }
             catch(err){
-               console.log(message.err)
+               console.log(err.message)
             }
 
         }
@@ -39,7 +39,13 @@ const ProductDetails = () => {
       await api.post("/orders", {
         productId:product._id,
         quantity: Number(quantity),
-      });
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      );
       
       alert("Order placed!");
       setLoading(false);
@@ -79,7 +85,7 @@ const ProductDetails = () => {
         
         <img
           className="w-[18vw] h-[30vh] object-cover rounded-lg shadow-md"
-          src={`http://localhost:5001/uploads/${product.farmerId._id}/${product.image}`}
+          src={product.image}
           alt={product.name}
         />
       </div>
@@ -105,6 +111,15 @@ const ProductDetails = () => {
         <p><b>Name:</b> {product.farmerId.username}</p>
         <p><b>Farm:</b> {product.farmerId.farmName}</p>
         <p><b>Address:</b> {product.farmerId.address}</p>
+      </div>
+
+      <div>
+        <label className="block font-semibold mb-1">Quantity:(Kg)</label>
+        <input type="number"  min="1" max={product.quantity} value={quantity}  onChange={(e)=>setQuantity(Number(e.target.value))}
+            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+            ></input>
+
+        <p>Total Price:${product.price * quantity}</p>
       </div>
 
       {/* Buttons */}
