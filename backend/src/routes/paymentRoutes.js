@@ -1,4 +1,8 @@
 import express from "express";
+import authorizeRoles from "../middlewares/roleMiddleware.js";
+import verifyToken from "../middlewares/authMiddleware.js";
+
+
 import {
   processPayment,
   getKey,
@@ -7,9 +11,9 @@ import {
 
 const router = express.Router();
 
-router.post("/checkout", processPayment);
-router.get("/getkey", getKey);
-router.post("/verification", paymentVerification);
+router.post("/checkout",verifyToken , authorizeRoles("consumer") , processPayment);
+router.get("/getkey",verifyToken , authorizeRoles("consumer"), getKey);
+router.post("/verification" , paymentVerification);
 
 export default router;
 

@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../components/ProtectedRoute";
 import RoleBasedRoute from "../components/RoleBasedRoute";
 
+import PaymentSuccess from "../pages/consumer/PaymentSuccess";
 import Login from "../pages/Login";
 import Unauthorized from "../pages/Unauthorized";
 import AdminDashboard from "../pages/admin/AdminDashboard";
@@ -106,6 +107,14 @@ const AppRoutes = () => {
         element={
           <ProtectedRoute>
             <ProductForm />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/PaymentSuccess"
+        element={
+          <ProtectedRoute>
+            <PaymentSuccess />
           </ProtectedRoute>
         }
       />

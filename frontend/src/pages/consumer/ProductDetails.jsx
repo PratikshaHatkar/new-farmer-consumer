@@ -56,6 +56,41 @@ const ProductDetails = () => {
     }
     };
 
+    const checkoutHandler = async (amount) =>{
+      const {data:keyData} = await api.get("/v1/getKey")
+      const {key} = keyData
+    
+      const {data:orderData} = await api.post("/v1/checkout" , {amount})
+      const {order} = orderData
+  
+  
+      var options = {
+        key, // Enter the Key ID generated from the Dashboard
+        amount, // Amount is in currency subunits. 
+        "currency": "INR",
+        "name": "FarmConnect", //your business name
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": order.id, // This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "callback_url": "http://localhost:5001/api/v1/verification",
+        "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+            "name": "Gauri Kumar", //your customer's name
+            "email": "gauri.kumar@example.com",
+            "contact": "+919876543210" //Provide the customer's phone number for better conversion rates 
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+    var rzp1 = new Razorpay(options);
+    // document.getElementById('rzp-button1').onclick = function(e){
+        rzp1.open();
+  // }
+  }
+
   return (
     // <div className='border-2 max-w-[30vw] justify-center'>
     //   <div className="img">
@@ -130,7 +165,7 @@ const ProductDetails = () => {
         {/* <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition">
           Buy Now
         </button> */}
-        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition" onClick={handleOrder} disabled={loading}>
+        <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition" onClick={()=>{checkoutHandler(product.price * quantity)}} disabled={loading}>
         {loading ? "Placing..." : "Place Order"}
       </button>
       </div>

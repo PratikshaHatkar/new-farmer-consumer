@@ -1,7 +1,7 @@
 import { instance } from "../config/razorpay.js";
 import crypto from "crypto";
 
-export const processPayment = async (req, res) => {
+const processPayment = async (req, res) => {
   try {
     const options = {
       amount: Number(req.body.amount * 100),
@@ -19,13 +19,13 @@ export const processPayment = async (req, res) => {
   }
 };
 
-export const getKey = async (req, res) => {
+const getKey = async (req, res) => {
   res.status(200).json({
     key: process.env.RAZORPAY_API_KEY,
   });
 };
 
-export const paymentVerification = async (req, res) => {
+const paymentVerification = async (req, res) => {
   const {
     razorpay_payment_id,
     razorpay_order_id,
@@ -50,6 +50,13 @@ export const paymentVerification = async (req, res) => {
   }
 };
 
+
+export {
+  processPayment,
+  getKey,
+  paymentVerification
+
+}
 // import { instance } from "../server.js"
 // import crypto from "crypto"
 // export const processPayment = async(req , res)=>{
