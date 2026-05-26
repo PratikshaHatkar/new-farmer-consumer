@@ -1,14 +1,22 @@
-const express = require("express")
-const authorizeRoles = require("../middlewares/roleMiddleware")
-const verifyToken  = require("../middlewares/authMiddleware")
-const Product = require("../models/productModel")
-const router = express.Router()
-const upload = require("../middlewares/upload")
-const multer = require("multer");
+import express from "express";
+import authorizeRoles from "../middlewares/roleMiddleware.js";
+import verifyToken from "../middlewares/authMiddleware.js";
+import Product from "../models/productModel.js";
+import upload from "../middlewares/upload.js";
+import multer from "multer";
 
-const {addProduct , getProductCount , getProducts , deleteProduct , updateProduct ,getSingleProduct ,
-    getAllProducts , getProductDetails} = require("../controllers/productController")
+import {
+  addProduct,
+  getProductCount,
+  getProducts,
+  deleteProduct,
+  updateProduct,
+  getSingleProduct,
+  getAllProducts,
+  getProductDetails,
+} from "../controllers/productController.js";
 
+const router = express.Router();
 
 router.get("/" , verifyToken , authorizeRoles("admin" , "farmer") , getProducts,  (req,res) =>{
     res.json({message: "list"})
@@ -28,4 +36,4 @@ router.get("/productInfo/:id" , verifyToken , authorizeRoles("admin" , "consumer
 
 router.put("/product/:id" , verifyToken , authorizeRoles("admin" , "farmer") ,  upload.single("image"), updateProduct)
 
- module.exports = router;
+export default router;

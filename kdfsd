@@ -1,0 +1,117 @@
+warning: LF will be replaced by CRLF in backend/package.json.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in package-lock.json.
+The file will have its original line endings in your working directory
+warning: LF will be replaced by CRLF in package.json.
+The file will have its original line endings in your working directory
+[1mdiff --git a/backend/package.json b/backend/package.json[m
+[1mindex 90ec793..e976dcf 100644[m
+[1m--- a/backend/package.json[m
+[1m+++ b/backend/package.json[m
+[36m@@ -3,6 +3,8 @@[m
+   "version": "1.0.0",[m
+   "description": "",[m
+   "main": "index.js",[m
+[32m+[m[32m  "type": "module",[m
+[32m+[m
+   "scripts": {[m
+     "dev": "nodemon src/index.js",[m
+     "test": "echo \"Error: no test specified\" && exit 1"[m
+[1mdiff --git a/backend/src/config/cloudinary.js b/backend/src/config/cloudinary.js[m
+[1mindex 6425ab9..83d1315 100644[m
+[1m--- a/backend/src/config/cloudinary.js[m
+[1m+++ b/backend/src/config/cloudinary.js[m
+[36m@@ -1,4 +1,5 @@[m
+[31m-const cloudinary = require("cloudinary").v2;[m
+[32m+[m[32mimport { v2 as cloudinary } from "cloudinary";[m
+[32m+[m
+ [m
+ cloudinary.config({[m
+   cloud_name: "dm6pdtxnv",[m
+[36m@@ -6,4 +7,4 @@[m [mcloudinary.config({[m
+   api_secret: "VXY00arip8XEMcLX4qnfpH_xyaA",[m
+ });[m
+ [m
+[31m-module.exports = cloudinary;[m
+\ No newline at end of file[m
+[32m+[m[32mexport default cloudinary;[m
+\ No newline at end of file[m
+[1mdiff --git a/backend/src/config/dbConnect.js b/backend/src/config/dbConnect.js[m
+[1mindex 69c1a25..f0c4124 100644[m
+[1m--- a/backend/src/config/dbConnect.js[m
+[1m+++ b/backend/src/config/dbConnect.js[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-const mongoose = require("mongoose");[m
+[32m+[m[32mimport mongoose from "mongoose";[m
+ [m
+ const dbConnect = async () =>{[m
+ [m
+[36m@@ -12,4 +12,4 @@[m [mconst dbConnect = async () =>{[m
+      }[m
+ }[m
+ [m
+[31m-module.exports = dbConnect;[m
+\ No newline at end of file[m
+[32m+[m[32mexport default dbConnect;[m
+\ No newline at end of file[m
+[1mdiff --git a/backend/src/controllers/authController.js b/backend/src/controllers/authController.js[m
+[1mindex 7d6980d..681c395 100644[m
+[1m--- a/backend/src/controllers/authController.js[m
+[1m+++ b/backend/src/controllers/authController.js[m
+[36m@@ -1,7 +1,7 @@[m
+ [m
+[31m-const bcrypt = require("bcryptjs");[m
+[31m-const jwt = require("jsonwebtoken")[m
+[31m-const User = require("../models/userModel")[m
+[32m+[m[32mimport bcrypt from "bcryptjs";[m
+[32m+[m[32mimport jwt from "jsonwebtoken";[m
+[32m+[m[32mimport User from "../models/userModel.js";[m
+ [m
+ const register = async (req , res) =>{[m
+     try{[m
+[36m@@ -85,11 +85,10 @@[m [mconst updateMyProfile = async (req , res) =>{[m
+ [m
+ }[m
+   [m
+[31m-[m
+[31m-module.exports = {[m
+[31m-    register ,[m
+[32m+[m[32mexport {[m
+[32m+[m[32m    register,[m
+     login,[m
+     logout,[m
+[31m-    getMyProfile , [m
+[32m+[m[32m    getMyProfile,[m
+     updateMyProfile,[m
+[31m-};[m
+\ No newline at end of file[m
+[32m+[m[32m  };[m
+\ No newline at end of file[m
+[1mdiff --git a/backend/src/controllers/orderController.js b/backend/src/controllers/orderController.js[m
+[1mindex 3884606..9ca194b 100644[m
+[1m--- a/backend/src/controllers/orderController.js[m
+[1m+++ b/backend/src/controllers/orderController.js[m
+[36m@@ -1,22 +1,52 @@[m
+[31m-const Order = require("../models/orderModel")[m
+[31m-const Product = require("../models/productModel")[m
+[32m+[m[32mimport Order from "../models/orderModel.js";[m
+[32m+[m[32mimport Product from "../models/productModel.js";[m
+ [m
+ const placeOrder = async(req , res) => {[m
+     try{[m
+         const {productId , quantity} = req.body;[m
+ [m
+[32m+[m[32m        if (!productId || !quantity) {[m
+[32m+[m[32m            return res.status(400).json({ message: "ProductId and quantity are required" });[m
+[32m+[m[32m          }[m
+[32m+[m[41m      [m
+[32m+[m[32m          if (quantity <= 0) {[m
+[32m+[m[32m            return res.status(400).json({ message: "Quantity must be at least 1" });[m
+[32m+[m[32m          }[m
+[32m+[m[41m      [m
+[32m+[m
+         const product = await Product.findById(productId)[m
+ [m
+[32m+[m[32m        if (!product) {[m
+[32m+[m[32m            return res.status(404).json({ message: "Product not found" });[m
+[32m+[m[32m

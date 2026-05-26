@@ -1,8 +1,10 @@
-
-const express = require("express")
-const authorizeRoles = require("../middlewares/roleMiddleware")
-const verifyToken  = require("../middlewares/authMiddleware")
-const {getMyProfile , updateMyProfile} = require("../controllers/authController")
+import express from "express";
+import authorizeRoles from "../middlewares/roleMiddleware.js";
+import verifyToken from "../middlewares/authMiddleware.js";
+import {
+  getMyProfile,
+  updateMyProfile,
+} from "../controllers/authController.js";
 
 const router = express.Router()
 //only admin can access
@@ -26,4 +28,4 @@ router.put("/me" ,verifyToken ,  updateMyProfile , (req , res) =>{
 })
 
 
-module.exports = router;
+export default router;

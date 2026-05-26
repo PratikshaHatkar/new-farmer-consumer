@@ -67,3 +67,8 @@ backend api work but frontend has problem
 
 1 march:
 order list frontend
+
+4 march quality add but place order is not work and update order is work and display orders also  work
+
+24 may
+payment gateway

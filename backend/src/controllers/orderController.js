@@ -1,21 +1,51 @@
-const Order = require("../models/orderModel")
-const Product = require("../models/productModel")
+import Order from "../models/orderModel.js";
+import Product from "../models/productModel.js";
 
 const placeOrder = async(req , res) => {
     try{
         const {productId , quantity} = req.body;
 
+        if (!productId || !quantity) {
+            return res.status(400).json({ message: "ProductId and quantity are required" });
+          }
+      
+          if (quantity <= 0) {
+            return res.status(400).json({ message: "Quantity must be at least 1" });
+          }
+      
+
         const product = await Product.findById(productId)
+
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+          }
+      
+          // 📦 Check stock
+          if (product.quantity < quantity) {
+            return res.status(400).json({
+              message: `Only ${product.quantity} items available in stock`,
+            });
+          }
+
+          // 💰 Calculate total price (backend should always calculate this)
+        const totalPrice = product.price * quantity;
+
 
         const order = new Order({
             buyerId : req.user.id,
             farmerId : product.farmerId,
             productId,
             quantity,
-            totalPrice:product.price * quantity,
+            totalPrice,
+            status:"pending",
         })
 
             await order.save();
+
+         // 📉 Reduce stock
+            product.quantity -= quantity;
+            await product.save();
+
 
            res.json({ message: "Order placed successfully", order });
         } catch (err) {
@@ -55,9 +85,8 @@ const updateOrderStatus = async (req , res) =>{
 }
 
 
-
-module.exports = {
+export {
     placeOrder,
-    getFarmerOrders , 
+    getFarmerOrders,
     updateOrderStatus,
-}
+  };

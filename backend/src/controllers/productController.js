@@ -1,7 +1,7 @@
-const fs = require("fs")
-const path = require("path")
-const Product = require("../models/productModel")
-const cloudinary = require("../config/cloudinary");
+import fs from "fs";
+import path from "path";
+import Product from "../models/productModel.js";
+import cloudinary from "../config/cloudinary.js";
 
 
 const addProduct = async (req, res) => {
@@ -243,13 +243,13 @@ const updateProduct = async (req, res) => {
 
 
 
-module.exports = {
-    addProduct , 
-    getProducts,
-    getProductCount,
-    deleteProduct,
-    getSingleProduct,
-    updateProduct,
-    getAllProducts,
-    getProductDetails,
-}
+export {
+  addProduct,
+  getProducts,
+  getProductCount,
+  deleteProduct,
+  getSingleProduct,
+  updateProduct,
+  getAllProducts,
+  getProductDetails,
+};
