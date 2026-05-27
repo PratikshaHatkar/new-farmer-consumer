@@ -144,7 +144,7 @@ const ProductForm = () => {
     return (
     <div className="min-h-screen flex justify-center items-center">
       <div className="productForm max-w-md max-h-lg border-2 border-black p-3 ">     
-           <h2 className="text-center">Add Product</h2>
+           {/* <h2 className="text-center">Add Product</h2> */}
            <form onSubmit={handleSubmit} className="">
            <button
            type="button"
